@@ -1,0 +1,4 @@
+{
+  "_comment": "Mark patterns as false positives. 3+ marks = demoted by pattern_monitor.",
+  "_usage": "python3 .anti-slop/harness/mark_false_positive.py <pattern> [reason]"
+}

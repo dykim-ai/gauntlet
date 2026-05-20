@@ -1,0 +1,4 @@
+.anti-slop/reports/*.json
+.anti-slop/reports/*.jsonl
+.anti-slop/reports/*.jsonl.*
+.anti-slop/policies/learned-rules.json

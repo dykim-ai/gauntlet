@@ -1,0 +1,51 @@
+# Anti-Slop Taxonomy v1.0
+# Pattern definitions for AI coding agent slop detection.
+# Detection: mechanical (regex), sonnet (LLM criteria), evidence (checked against evidence.json)
+# Severity: critical (blocks), high (blocks unless override), medium (tracked), low (advisory)
+
+categories:
+  fake_completeness:
+    severity: critical
+    patterns:
+      - {id: SLOP-FC-001, name: todo_marker, detection: mechanical, description: "TODO/FIXME/HACK/PLACEHOLDER in production code"}
+      - {id: SLOP-FC-002, name: not_implemented_throw, detection: mechanical, description: "throw 'Not implemented' or raise NotImplementedError"}
+      - {id: SLOP-FC-003, name: mock_in_production, detection: mechanical, description: "Mock/stub/fake call in non-test file"}
+      - {id: SLOP-FC-004, name: hardcoded_return, detection: sonnet, description: "Function returns hardcoded value where computation expected"}
+      - {id: SLOP-FC-005, name: coming_soon_ui, detection: sonnet, description: "UI element gating empty code path"}
+      - {id: SLOP-FC-006, name: report_as_completion, detection: evidence, description: "Agent claims done but output artifact missing or scope mismatch"}
+
+  test_theater:
+    severity: critical
+    patterns:
+      - {id: SLOP-TT-001, name: mock_only_assertion, detection: sonnet, description: "Test only asserts mock calls, never checks real output"}
+      - {id: SLOP-TT-002, name: skipped_tests, detection: mechanical, description: "Tests marked skip/xit/xdescribe"}
+      - {id: SLOP-TT-003, name: no_tests_run, detection: evidence, description: "Files changed but no test command executed"}
+
+  architecture_drift:
+    severity: critical
+    patterns:
+      - {id: SLOP-AD-001, name: schema_bypass, detection: mechanical, description: "SQL string concatenation instead of parameterized queries"}
+      - {id: SLOP-AD-002, name: runtime_agent_where_deterministic, detection: sonnet, description: "LLM call in deterministic code path"}
+      - {id: SLOP-AD-003, name: migration_code_mismatch, detection: sonnet, description: "Migration column names don't match service code"}
+
+  fragile_glue:
+    severity: high
+    patterns:
+      - {id: SLOP-FG-001, name: silent_catch, detection: mechanical, description: "Empty catch block swallows errors"}
+      - {id: SLOP-FG-002, name: retry_without_idempotency, detection: sonnet, description: "Retry on non-idempotent operation"}
+
+  code_quality:
+    severity: medium
+    patterns:
+      - {id: SLOP-CQ-001, name: console_log, detection: mechanical, description: "console.log in production code"}
+      - {id: SLOP-CQ-002, name: commented_out_code, detection: mechanical, description: "3+ lines of commented-out code"}
+      - {id: SLOP-CQ-003, name: magic_number, detection: mechanical, severity_override: low}
+
+  security_privacy:
+    severity: critical
+    patterns:
+      - {id: SLOP-SP-001, name: hardcoded_secret, detection: mechanical, description: "Credential hardcoded in source"}
+
+# === ADD PROJECT-SPECIFIC PATTERNS BELOW ===
+# project_specific:
+#   - {id: SLOP-PROJ-001, name: my_pattern, category: fake_completeness, severity: critical, detection: evidence, description: "..."}
