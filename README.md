@@ -81,7 +81,7 @@ Ten criteria evaluated by Sonnet against every diff, no per-task authoring requi
 
 ### Step 1: Clone
 
-    git clone https://github.com/dykim2-ai/gauntlet.git /tmp/gauntlet
+    git clone https://github.com/dykim-ai/gauntlet.git /tmp/gauntlet
 
 ### Step 2: Copy into your project
 
